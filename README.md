@@ -15,9 +15,8 @@ or to highlight lines that contain the word "named":
 
 Author
 ------
-John P. Speno speno@macspeno.com
+John P. Speno john@macspeno.com
 
-[http://macspeno.com/jps/](http://macspeno.com/jps/)
 
 Thanks
 ------

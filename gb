@@ -1,0 +1,39 @@
+#!/usr/bin/env python -u
+"""
+A command line filter to invert lines of its input.
+Useful for watching slow moving log files or for highlighting
+interesting lines.
+"""
+
+import sys
+
+def coroutine(func):
+    def start(*args, **kwargs):
+        cr = func(*args, **kwargs)
+        cr.next()
+        return cr
+    return start
+
+@coroutine
+def greenbar(pat=None):
+    green = True
+    try:
+        while True:
+            line = (yield)
+            if (pat and pat in line) or (not pat and green):
+                print "\x1b[7m%s\x1b[0m" % line
+            else:
+                print line
+            green = not green
+    except GeneratorExit:
+        pass
+
+if __name__ == '__main__':
+    try:
+       pat = sys.argv[1]
+    except IndexError:
+       pat = None
+
+    gb = greenbar(pat)
+    for line in iter(sys.stdin.readline, ""):
+        gb.send(line[:-1])
